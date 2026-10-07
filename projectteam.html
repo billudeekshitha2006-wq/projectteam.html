@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Project Team Finder</title>
+
+    <!-- ================= CSS ================= -->
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7ff;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 35px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 17px;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        /* SEARCH AREA */
+
+        .search-area {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-area h2 {
+            margin-bottom: 15px;
+        }
+
+        .search-area input,
+        .search-area select {
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-right: 10px;
+        }
+
+        .search-area input {
+            width: 50%;
+        }
+
+        /* MAIN */
+
+        .main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        /* STUDENTS */
+
+        .students {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .student-card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .student-card h3 {
+            color: #4f46e5;
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .student-card p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .skills {
+            margin: 15px 0;
+        }
+
+        .skill {
+            display: inline-block;
+            background: #eeeaff;
+            color: #5b21b6;
+            padding: 6px 10px;
+            margin: 3px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        /* BUTTON */
+
+        .add-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .add-btn:hover {
+            background: #3730a3;
+        }
+
+        .added-btn {
+            width: 100%;
+            padding: 12px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* TEAM */
+
+        .team-box {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .team-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .team-member {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f3f4f6;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .remove-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 7px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .create-btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 25px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 800px) {
+
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            .students {
+                grid-template-columns: 1fr;
+            }
+
+            .search-area input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HTML ================= -->
+
+<header>
+
+    <h1>🚀 Project Team Finder</h1>
+
+    <p>
+        Find the perfect teammates for your college project
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- SEARCH -->
+
+    <div class="search-area">
+
+        <h2>🔍 Find Teammates</h2>
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search by name or skill..."
+            onkeyup="searchStudents()"
+        >
+
+        <select
+            id="skill"
+            onchange="searchStudents()"
+        >
+
+            <option value="All">
+                All Skills
+            </option>
+
+            <option value="HTML">
+                HTML
+            </option>
+
+            <option value="CSS">
+                CSS
+            </option>
+
+            <option value="JavaScript">
+                JavaScript
+            </option>
+
+            <option value="Python">
+                Python
+            </option>
+
+            <option value="Java">
+                Java
+            </option>
+
+            <option value="React">
+                React
+            </option>
+
+            <option value="SQL">
+                SQL
+            </option>
+
+            <option value="Machine Learning">
+                Machine Learning
+            </option>
+
+            <option value="UI/UX">
+                UI/UX
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+
+        <!-- STUDENT LIST -->
+
+        <div>
+
+            <h2>👨‍💻 Available Students</h2>
+
+            <br>
+
+            <div
+                class="students"
+                id="studentList"
+            ></div>
+
+        </div>
+
+
+        <!-- TEAM -->
+
+        <div class="team-box">
+
+            <h2>👥 My Team</h2>
+
+            <p>
+                Team Members:
+                <strong id="teamCount">0</strong>
+            </p>
+
+            <div id="teamList">
+
+                <div class="empty">
+                    No team members added.
+                </div>
+
+            </div>
+
+            <button
+                class="create-btn"
+                onclick="createTeam()"
+            >
+                🚀 Create Project Team
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        Project Team Finder © 2026
+    </p>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+/* STUDENT DATA */
+
+const students = [
+
+    {
+        id: 1,
+        name: "Ananya",
+        branch: "CSE",
+        year: "3rd Year",
+        domain: "Web Development",
+        skills: ["HTML", "CSS", "JavaScript"]
+    },
+
+    {
+        id: 2,
+        name: "Rahul",
+        branch: "CSE",
+        year: "3rd Year",
+        domain: "Artificial Intelligence",
+        skills: ["Python", "Machine Learning", "SQL"]
+    },
+
+    {
+        id: 3,
+        name: "Priya",
+        branch: "CSE",
+        year: "3rd Year",
+        domain: "Software Development",
+        skills: ["Java", "SQL"]
+    },
+
+    {
+        id: 4,
+        name: "Karthik",
+        branch: "ECE",
+        year: "3rd Year",
+        domain: "IoT",
+        skills: ["Python", "JavaScript"]
+    },
+
+    {
+        id: 5,
+        name: "Sneha",
+        branch: "CSE",
+        year: "2nd Year",
+        domain: "UI/UX Design",
+        skills: ["UI/UX", "CSS"]
+    },
+
+    {
+        id: 6,
+        name: "Arjun",
+        branch: "CSE",
+        year: "3rd Year",
+        domain: "Web Development",
+        skills: ["React", "JavaScript", "CSS"]
+    },
+
+    {
+        id: 7,
+        name: "Meghana",
+        branch: "IT",
+        year: "3rd Year",
+        domain: "Data Science",
+        skills: ["Python", "SQL", "Machine Learning"]
+    },
+
+    {
+        id: 8,
+        name: "Vikram",
+        branch: "CSE",
+        year: "4th Year",
+        domain: "Cyber Security",
+        skills: ["Python", "Java"]
+    }
+
+];
+
+
+/* TEAM */
+
+let team = [];
+
+
+/* DISPLAY STUDENTS */
+
+function displayStudents(list) {
+
+    const studentList =
+        document.getElementById("studentList");
+
+    studentList.innerHTML = "";
+
+
+    if (list.length === 0) {
+
+        studentList.innerHTML =
+            "<p>No students found.</p>";
+
+        return;
+
+    }
+
+
+    list.forEach(student => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "student-card";
+
+
+        const alreadyAdded =
+            team.some(
+                member =>
+                member.id === student.id
+            );
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${student.name}
+            </h3>
+
+            <p>
+                🎓 ${student.branch}
+                | ${student.year}
+            </p>
+
+            <p>
+                💻 ${student.domain}
+            </p>
+
+            <div class="skills">
+
+                ${student.skills.map(
+                    skill =>
+                    `<span class="skill">
+                        ${skill}
+                    </span>`
+                ).join("")}
+
+            </div>
+
+            <button
+                class="${alreadyAdded
+                    ? "added-btn"
+                    : "add-btn"}"
+                onclick="addToTeam(${student.id})"
+                ${alreadyAdded ? "disabled" : ""}
+            >
+
+                ${alreadyAdded
+                    ? "✓ Added to Team"
+                    : "+ Add to Team"}
+
+            </button>
+
+        `;
+
+
+        studentList.appendChild(card);
+
+    });
+
+}
+
+
+/* ADD TEAM MEMBER */
+
+function addToTeam(id) {
+
+    const student =
+        students.find(
+            student =>
+            student.id === id
+        );
+
+
+    if (
+        !team.some(
+            member =>
+            member.id === id
+        )
+    ) {
+
+        team.push(student);
+
+    }
+
+
+    displayStudents(
+        getFilteredStudents()
+    );
+
+    displayTeam();
+
+}
+
+
+/* REMOVE TEAM MEMBER */
+
+function removeFromTeam(id) {
+
+    team =
+        team.filter(
+            member =>
+            member.id !== id
+        );
+
+
+    displayStudents(
+        getFilteredStudents()
+    );
+
+    displayTeam();
+
+}
+
+
+/* DISPLAY TEAM */
+
+function displayTeam() {
+
+    const teamList =
+        document.getElementById("teamList");
+
+    const teamCount =
+        document.getElementById("teamCount");
+
+
+    teamCount.innerText =
+        team.length;
+
+
+    teamList.innerHTML = "";
+
+
+    if (team.length === 0) {
+
+        teamList.innerHTML =
+            `<div class="empty">
+                No team members added.
+            </div>`;
+
+        return;
+
+    }
+
+
+    team.forEach(member => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "team-member";
+
+
+        div.innerHTML = `
+
+            <div>
+
+                <strong>
+                    ${member.name}
+                </strong>
+
+                <br>
+
+                <small>
+                    ${member.branch}
+                </small>
+
+            </div>
+
+            <button
+                class="remove-btn"
+                onclick="removeFromTeam(${member.id})"
+            >
+                ✕
+            </button>
+
+        `;
+
+
+        teamList.appendChild(div);
+
+    });
+
+}
+
+
+/* GET FILTERED STUDENTS */
+
+function getFilteredStudents() {
+
+    const search =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+
+    const selectedSkill =
+        document
+        .getElementById("skill")
+        .value;
+
+
+    return students.filter(student => {
+
+        const searchMatch =
+
+            student.name
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            student.skills.some(
+                skill =>
+                skill
+                .toLowerCase()
+                .includes(search)
+            );
+
+
+        const skillMatch =
+
+            selectedSkill === "All"
+
+            ||
+
+            student.skills.includes(
+                selectedSkill
+            );
+
+
+        return searchMatch && skillMatch;
+
+    });
+
+}
+
+
+/* SEARCH STUDENTS */
+
+function searchStudents() {
+
+    const result =
+        getFilteredStudents();
+
+    displayStudents(result);
+
+}
+
+
+/* CREATE TEAM */
+
+function createTeam() {
+
+    if (team.length === 0) {
+
+        alert(
+            "Please add students to your team first!"
+        );
+
+        return;
+
+    }
+
+
+    let names =
+        team
+        .map(member => member.name)
+        .join(", ");
+
+
+    alert(
+        "🎉 Project Team Created Successfully!\n\n" +
+        "Team Members:\n" +
+        names
+    );
+
+}
+
+
+/* INITIAL LOAD */
+
+displayStudents(students);
+
+displayTeam();
+
+
+</script>
+
+</body>
+
+</html>
